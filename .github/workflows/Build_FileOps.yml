@@ -1,0 +1,23 @@
+name: Build FileOps
+on: [push]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v4.2.2
+      
+      - name: Setup .Net Framework
+        uses: actions/setup-dotnet@v3
+      
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2.0.0
+
+      - name: Restore NuGet Packages
+        run: nuget restore FileOps.sln
+        
+      - name: Build Solution
+        run: msbuild FileOps.sln /p:platform="Any CPU" /p:configuration="Release"
